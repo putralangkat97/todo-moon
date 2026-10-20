@@ -1,9 +1,14 @@
 import {cleanup, render, screen} from '@testing-library/react';
 import {afterEach, beforeAll, describe, expect, test, vi} from 'vitest';
 import {TooltipProvider} from '@anggit-mono/ui/components/tooltip';
-import {DashboardPageContent} from './page';
 
-describe('dashboard', () => {
+import CompletedPage from './completed/page';
+import InboxPage from './inbox/page';
+import ProjectsPage from './projects/page';
+import TodayPage from './today/page';
+import UpcomingPage from './upcoming/page';
+
+describe('dashboard pages', () => {
   afterEach(cleanup);
 
   beforeAll(() => {
@@ -20,44 +25,20 @@ describe('dashboard', () => {
   });
 
   test.each([
-    ['inbox', 'No tickets in Inbox'],
-    ['today', 'No tickets today'],
-    ['upcoming', 'No upcoming tickets'],
-    ['completed', 'No completed tickets'],
-  ])('renders the %s ticket empty state', async (view, title) => {
-    render(
-      await DashboardPageContent({searchParams: Promise.resolve({view})}),
-      {
-        wrapper: TooltipProvider,
-      },
-    );
+    [InboxPage, 'No tickets in Inbox'],
+    [TodayPage, 'No tickets today'],
+    [UpcomingPage, 'No upcoming tickets'],
+    [CompletedPage, 'No completed tickets'],
+  ])('renders the dedicated ticket page', (Page, title) => {
+    render(<Page />, {wrapper: TooltipProvider});
 
     expect(screen.getByText(title)).toBeDefined();
   });
 
-  test('renders the projects empty state and dashboard links', async () => {
-    render(
-      await DashboardPageContent({
-        searchParams: Promise.resolve({view: 'projects'}),
-      }),
-      {wrapper: TooltipProvider},
-    );
+  test('renders the projects page', () => {
+    render(<ProjectsPage />, {wrapper: TooltipProvider});
 
     expect(screen.getByText('No projects yet')).toBeDefined();
     expect(screen.getByRole('button', {name: 'Create project'})).toBeDefined();
-    expect(screen.getByRole('link', {name: 'Today'}).getAttribute('href')).toBe(
-      '/dashboard?view=today',
-    );
-  });
-
-  test('falls back to Inbox for an unknown view', async () => {
-    render(
-      await DashboardPageContent({
-        searchParams: Promise.resolve({view: 'unknown'}),
-      }),
-      {wrapper: TooltipProvider},
-    );
-
-    expect(screen.getByText('No tickets in Inbox')).toBeDefined();
   });
 });
