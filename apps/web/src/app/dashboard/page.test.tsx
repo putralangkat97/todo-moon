@@ -1,4 +1,4 @@
-import {cleanup, render, screen} from '@testing-library/react';
+import {cleanup, fireEvent, render, screen} from '@testing-library/react';
 import {afterEach, beforeAll, describe, expect, test, vi} from 'vitest';
 import {TooltipProvider} from '@anggit-mono/ui/components/tooltip';
 
@@ -33,6 +33,23 @@ describe('dashboard pages', () => {
     render(<Page />, {wrapper: TooltipProvider});
 
     expect(screen.getByText(title)).toBeDefined();
+  });
+
+  test('selects and clears an assignee', async () => {
+    render(<InboxPage />, {wrapper: TooltipProvider});
+
+    expect(screen.getByText('Assignee')).toBeDefined();
+    const input = screen.getByPlaceholderText('Select an assignee');
+
+    fireEvent.keyDown(input, {key: 'ArrowDown'});
+    fireEvent.click(await screen.findByText('shadcn@vercel.com'));
+
+    expect(screen.getByText('shadcn')).toBeDefined();
+    expect(screen.queryByPlaceholderText('Select an assignee')).toBeNull();
+
+    fireEvent.click(screen.getByRole('button', {name: 'Remove assignee'}));
+
+    expect(screen.getByPlaceholderText('Select an assignee')).toBeDefined();
   });
 
   test('renders the projects page', () => {
