@@ -7,6 +7,8 @@
 // Primitives
 // ---------------------------------------------------------------------------
 
+export type GreetingResponse = string;
+
 /** Full timestamp, e.g. "2026-10-19T09:30:00.000Z". */
 export type ISODateTime = string;
 /** Calendar date without a time, e.g. "2026-10-19". */

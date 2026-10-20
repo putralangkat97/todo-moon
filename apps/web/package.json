@@ -23,6 +23,7 @@
     "@anggit-mono/domain": "workspace:*",
     "@anggit-mono/types": "workspace:*",
     "@anggit-mono/ui": "workspace:*",
+    "@phosphor-icons/react": "^2.1.10",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",

@@ -1,6 +1,6 @@
-import {Suspense} from 'react';
-import {connection} from 'next/server';
 import type {GreetingResponse} from '@anggit-mono/types';
+import {connection} from 'next/server';
+import {Suspense} from 'react';
 
 async function HelloFromApi() {
   await connection();
