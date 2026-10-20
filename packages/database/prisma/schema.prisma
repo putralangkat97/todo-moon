@@ -1,0 +1,366 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum MemberRole {
+  OWNER
+  EDITOR
+  VIEWER
+}
+
+enum WorkspaceUsage {
+  PERSONAL
+  WORK
+  TEAM
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum OAuthProvider {
+  GITHUB
+  GOOGLE
+}
+
+enum AuthTokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  REVOKED
+  EXPIRED
+}
+
+enum ThemePreference {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+enum Density {
+  COMFORTABLE
+  COMPACT
+}
+
+enum WeekStart {
+  MONDAY
+  SUNDAY
+}
+
+enum DateFormat {
+  MMM_D_YYYY // Oct 19, 2026
+  D_M_YYYY // 19/10/2026
+  YYYY_MM_DD // 2026-10-19
+}
+
+enum ActivityType {
+  TASK_CREATED
+  TASK_ASSIGNED
+  PRIORITY_CHANGED
+  STATUS_CHANGED
+  DUE_DATE_CHANGED
+  TASK_COMPLETED
+  TASK_REOPENED
+  COMMENT_ADDED
+}
+
+// ---------------------------------------------------------------------------
+// Users and auth
+// ---------------------------------------------------------------------------
+
+model User {
+  id              String    @id @default(cuid())
+  name            String
+  email           String    @unique
+  passwordHash    String? // null when the user only signs in with GitHub or Google
+  avatarUrl       String?
+  emailVerifiedAt DateTime?
+  onboardedAt     DateTime? // set when the onboarding flow is finished or skipped
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  settings             UserSettings?
+  oauthAccounts        OAuthAccount[]
+  authTokens           AuthToken[]
+  workspaceMemberships WorkspaceMember[]
+  projectMemberships   ProjectMember[]
+  createdProjects      Project[]         @relation("ProjectCreator")
+  assignedTasks        Task[]            @relation("TaskAssignee")
+  createdTasks         Task[]            @relation("TaskCreator")
+  comments             Comment[]
+  mentions             CommentMention[]
+  activity             ActivityEvent[]
+  sentInvites          Invite[]          @relation("InviteSender")
+
+  @@map("users")
+}
+
+model OAuthAccount {
+  id                String        @id @default(cuid())
+  userId            String
+  provider          OAuthProvider
+  providerAccountId String
+  createdAt         DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("oauth_accounts")
+}
+
+// One-time tokens for email verification and password reset.
+// Store only a hash of the token; email the raw token to the user.
+model AuthToken {
+  id        String        @id @default(cuid())
+  userId    String
+  type      AuthTokenType
+  tokenHash String        @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+  @@map("auth_tokens")
+}
+
+model UserSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  // Appearance
+  theme        ThemePreference @default(SYSTEM)
+  density      Density         @default(COMFORTABLE)
+  weekStartsOn WeekStart       @default(MONDAY)
+  dateFormat   DateFormat      @default(MMM_D_YYYY)
+
+  // Email notifications
+  emailDueReminders Boolean @default(true)
+  emailDailySummary Boolean @default(false)
+  emailAssignments  Boolean @default(true)
+  emailWeeklyDigest Boolean @default(false)
+
+  // Push notifications
+  pushDueSoon Boolean @default(true)
+  pushOverdue Boolean @default(true)
+
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+// ---------------------------------------------------------------------------
+// Workspaces and projects
+// ---------------------------------------------------------------------------
+
+model Workspace {
+  id        String         @id @default(cuid())
+  name      String
+  usage     WorkspaceUsage @default(PERSONAL)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  members  WorkspaceMember[]
+  projects Project[]
+  tasks    Task[]
+  invites  Invite[]
+
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  id          String     @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        MemberRole @default(EDITOR)
+  createdAt   DateTime   @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+  @@map("workspace_members")
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  workspaceId String
+  name        String
+  description String?
+  color       String    @default("#18181b")
+  dueDate     DateTime? @db.Date
+  archivedAt  DateTime?
+  createdById String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy User            @relation("ProjectCreator", fields: [createdById], references: [id])
+  members   ProjectMember[]
+  tasks     Task[]
+  invites   Invite[]
+
+  @@index([workspaceId, archivedAt])
+  @@map("projects")
+}
+
+model ProjectMember {
+  id        String     @id @default(cuid())
+  projectId String
+  userId    String
+  role      MemberRole @default(EDITOR)
+  createdAt DateTime   @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+  @@index([userId])
+  @@map("project_members")
+}
+
+// Invite to a workspace, or to one project when projectId is set.
+// Store only a hash of the invite token; email the raw token.
+model Invite {
+  id          String       @id @default(cuid())
+  email       String
+  role        MemberRole   @default(EDITOR)
+  message     String?
+  status      InviteStatus @default(PENDING)
+  tokenHash   String       @unique
+  workspaceId String
+  projectId   String?
+  invitedById String
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdAt   DateTime     @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  invitedBy User      @relation("InviteSender", fields: [invitedById], references: [id])
+
+  @@index([email])
+  @@index([workspaceId, status])
+  @@map("invites")
+}
+
+// ---------------------------------------------------------------------------
+// Tasks
+// ---------------------------------------------------------------------------
+
+model Task {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(TODO)
+  dueDate     DateTime?    @db.Date
+  completedAt DateTime?
+  position    Float        @default(0) // order inside a board column
+  workspaceId String
+  projectId   String? // null = Inbox
+  assigneeId  String?
+  createdById String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  workspace Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project   Project?        @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  assignee  User?           @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdBy User            @relation("TaskCreator", fields: [createdById], references: [id])
+  subtasks  Subtask[]
+  comments  Comment[]
+  activity  ActivityEvent[]
+
+  @@index([assigneeId, status, dueDate])
+  @@index([projectId, status, position])
+  @@index([workspaceId, dueDate])
+  @@map("tasks")
+}
+
+model Subtask {
+  id       String  @id @default(cuid())
+  taskId   String
+  title    String
+  done     Boolean @default(false)
+  position Int     @default(0)
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId, position])
+  @@map("subtasks")
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  taskId    String
+  authorId  String
+  body      String
+  editedAt  DateTime?
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  task     Task             @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  author   User             @relation(fields: [authorId], references: [id])
+  mentions CommentMention[]
+
+  @@index([taskId, createdAt])
+  @@map("comments")
+}
+
+model CommentMention {
+  commentId String
+  userId    String
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([commentId, userId])
+  @@index([userId])
+  @@map("comment_mentions")
+}
+
+// Append-only history shown in the Activity tab.
+// `payload` shape depends on `type` (see types.ts).
+model ActivityEvent {
+  id        String       @id @default(cuid())
+  taskId    String
+  actorId   String
+  type      ActivityType
+  payload   Json?
+  createdAt DateTime     @default(now())
+
+  task  Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  actor User @relation(fields: [actorId], references: [id])
+
+  @@index([taskId, createdAt(sort: Desc)])
+  @@map("activity_events")
+}

@@ -1,0 +1,67 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // dev:api
+    {
+      "name": "dev:api",
+      "request": "launch",
+      "type": "node",
+      "cwd": "${workspaceFolder}/apps/api",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "dev"],
+      "skipFiles": ["<node_internals>/**"]
+    },
+    // dev:web:server
+    {
+      "name": "dev:web:server",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/apps/web",
+      "request": "launch",
+      "command": "npm run dev"
+    },
+    // dev:web:client
+    {
+      "name": "dev:web:client",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3001"
+    },
+    // dev:web
+    {
+      "name": "dev:web",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/web",
+      "command": "npm run dev",
+      "serverReadyAction": {
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      }
+    },
+    // dev:server
+    {
+      "name": "dev",
+      "request": "launch",
+      "type": "node",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "dev"],
+      "skipFiles": ["<node_internals>/**"]
+    },
+    // dev
+    {
+      "name": "dev",
+      "request": "launch",
+      "type": "node",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "dev"],
+      "serverReadyAction": {
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      },
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "compounds": []
+}

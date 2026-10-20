@@ -1,0 +1,39 @@
+{
+  "name": "anggit-mono",
+  "private": true,
+  "displayName": "Anggit Mono",
+  "description": "A full-stack TypeScript monorepo boilerplate with Next.js, NestJS, Prisma, PostgreSQL, and shared UI",
+  "version": "0.1.0",
+  "homepage": "PROJECT_GIT_REPOSITORY_URL",
+  "license": "UNLICENSED",
+  "author": {
+    "name": "Anggit Ari Utomo",
+    "email": "anggitutomo97@gmail.com",
+    "url": "https://www.linkedin.com/in/MY_LINKEDIN_PAGE_URL"
+  },
+  "scripts": {
+    "dev": "pnpm --filter './packages/*' -r run build && pnpm --parallel -r run dev",
+    "test": "pnpm --parallel -r run test",
+    "test:ci": "pnpm --parallel -r run test:ci",
+    "tsc": "pnpm --filter './packages/*' -r run build && pnpm --parallel -r run compile",
+    "lint": "pnpm --parallel -r run lint",
+    "build": "pnpm -r run build",
+    "compile": "tsc"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@types/node": "^22.20.5",
+    "commitlint": "^21.2.3",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "9.39.5",
+    "gts": "^7.0.0",
+    "lefthook": "^2.2.2",
+    "typescript": "^5.9.3"
+  }
+}

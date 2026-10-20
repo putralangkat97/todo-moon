@@ -1,0 +1,24 @@
+{
+  "name": "@anggit-mono/domain",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "displayName": "Anggit Mono Domain",
+  "description": "Shared domain package for Anggit Mono",
+  "license": "UNLICENSED",
+  "author": {
+    "name": "Leandro S. Gomes",
+    "email": "leandroluk@gmail.com",
+    "url": "https://www.linkedin.com/in/leandroluk"
+  },
+  "scripts": {
+    "build": "tsc",
+    "compile": "tsc --noEmit",
+    "lint": "gts lint"
+  },
+  "keywords": [],
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

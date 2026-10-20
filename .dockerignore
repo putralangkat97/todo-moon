@@ -1,0 +1,13 @@
+.git
+.agents
+.aws
+.codex
+.next
+build
+dist
+node_modules
+**/node_modules
+**/.env
+**/.env.*
+!**/.env.example
+

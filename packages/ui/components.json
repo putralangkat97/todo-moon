@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "radix-lyra",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "mist",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "phosphor",
+  "rtl": false,
+  "aliases": {
+    "components": "@anggit-mono/ui/components",
+    "utils": "@anggit-mono/ui/lib/utils",
+    "ui": "@anggit-mono/ui/components",
+    "lib": "@anggit-mono/ui/lib",
+    "hooks": "@anggit-mono/ui/hooks"
+  },
+  "menuColor": "default",
+  "menuAccent": "subtle"
+}

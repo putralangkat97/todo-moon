@@ -1,0 +1,10 @@
+# https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpx commitlint --edit # https://commitlint.js.org
+pre-commit:
+  parallel: true
+  commands:
+    validate:
+      run: pnpm lint && pnpm tsc && pnpm build

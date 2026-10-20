@@ -1,0 +1,5 @@
+node_modules
+dist
+build
+packages/database/src/generated/
+.env
