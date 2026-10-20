@@ -16,9 +16,7 @@ COPY packages/types/package.json packages/types/package.json
 RUN pnpm install --frozen-lockfile
 
 COPY . .
-RUN pnpm --filter @anggit-mono/database build \
-  && pnpm --filter @anggit-mono/domain build \
-  && pnpm --filter @anggit-mono/api build \
+RUN pnpm --filter @anggit-mono/api... build \
   && pnpm deploy --filter @anggit-mono/api --prod /runtime \
   && cp -r apps/api/dist /runtime/dist \
   && cp -r packages/database/dist /runtime/node_modules/.pnpm/@anggit-mono+database@*/node_modules/@anggit-mono/database/dist \

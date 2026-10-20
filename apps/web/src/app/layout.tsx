@@ -1,9 +1,9 @@
-import type {Metadata} from 'next';
-import {Geist_Mono, Inter} from 'next/font/google';
+import {appName} from '#/constants';
 import {TooltipProvider} from '@anggit-mono/ui/components/tooltip';
 import '@anggit-mono/ui/globals.css';
 import {cn} from '@anggit-mono/ui/lib/utils';
-import {appName} from '#/constants';
+import type {Metadata} from 'next';
+import {Geist_Mono, Inter} from 'next/font/google';
 
 const inter = Inter({
   variable: '--font-sans',
@@ -25,6 +25,7 @@ export default function RootLayout({children}: LayoutProps<'/'>) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         'h-full antialiased font-sans',
         geistMono.variable,

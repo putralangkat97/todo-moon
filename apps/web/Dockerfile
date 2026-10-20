@@ -13,8 +13,7 @@ COPY packages/types/package.json packages/types/package.json
 RUN pnpm install --frozen-lockfile
 
 COPY . .
-RUN pnpm --filter @anggit-mono/domain build \
-  && pnpm --filter @anggit-mono/web build
+RUN pnpm --filter @anggit-mono/web... build
 
 FROM oven/bun:1.4.3 AS runtime
 
