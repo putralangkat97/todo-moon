@@ -13,6 +13,7 @@ import {usePathname} from 'next/navigation';
 import type {ReactNode} from 'react';
 
 import {appName} from '#/constants';
+import {Separator} from '@anggit-mono/ui/components/separator';
 import {
   Sidebar,
   SidebarContent,
@@ -28,7 +29,6 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from '@anggit-mono/ui/components/sidebar';
-import {Separator} from '@anggit-mono/ui/components/separator';
 
 const ticketViews = [
   {label: 'Inbox', href: '/dashboard/inbox', icon: TrayIcon},
@@ -40,6 +40,13 @@ const ticketViews = [
 const projectViews = [
   {label: 'Projects', href: '/dashboard/projects', icon: FolderIcon},
 ] as const;
+
+interface DashboardShellProps {
+  children: ReactNode;
+  title?: string;
+  description?: string;
+  action?: ReactNode;
+}
 
 function DashboardSidebar({pathname}: {pathname: string}) {
   const groups = [
@@ -93,7 +100,12 @@ function DashboardSidebar({pathname}: {pathname: string}) {
   );
 }
 
-export default function DashboardShell({children}: {children: ReactNode}) {
+export default function DashboardShell({
+  children,
+  title = '',
+  description = '',
+  action,
+}: DashboardShellProps) {
   const pathname = usePathname() ?? '/dashboard/inbox';
   const views = [...ticketViews, ...projectViews];
   const currentView = views.find(view => view.href === pathname);
@@ -112,7 +124,18 @@ export default function DashboardShell({children}: {children: ReactNode}) {
             {currentView?.label ?? 'Inbox'}
           </h1>
         </header>
-        <div className="flex flex-1">{children}</div>
+        <div className="flex flex-1 p-4">
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <h1 className="text-lg font-bold">{title}</h1>
+                <p className="text-sm">{description}</p>
+              </div>
+              {action}
+            </div>
+            {children}
+          </div>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

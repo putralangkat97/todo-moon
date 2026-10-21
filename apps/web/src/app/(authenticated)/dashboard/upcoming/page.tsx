@@ -1,5 +1,5 @@
-import Upcoming from '#/components/dashboard/upcoming';
+import UpcomingMainComponent from '#/components/dashboard/upcoming/upcoming-main';
 
 export default function UpcomingPage() {
-  return <Upcoming />;
+  return <UpcomingMainComponent />;
 }

@@ -1,6 +1,8 @@
 'use client';
 
 import {
+  KanbanIcon,
+  ListIcon,
   PencilSimpleIcon,
   PlusIcon,
   TrayIcon,
@@ -46,9 +48,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@anggit-mono/ui/components/select';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@anggit-mono/ui/components/tabs';
 import {Textarea} from '@anggit-mono/ui/components/textarea';
-import TicketEmptyState from './ticket-empty-state';
-import UserItem, {type User} from './user-item';
+import DashboardShell from '../dashboard-shell';
+import TicketEmptyState from '../ticket-empty-state';
+import UserItem, {type User} from '../user-item';
+import InboxKanban from './inbox-kanban';
+import {InboxListComponent} from './inbox-list';
+import {TaskData} from './types';
 
 const users: User[] = [
   {
@@ -70,7 +82,7 @@ const users: User[] = [
 
 type Subtask = {id: number; title: string; completed: boolean};
 
-export default function Inbox() {
+export default function InboxMainComponent() {
   const [createNewTicket, setCreateNewTicket] = useState(false);
   const [date, setDate] = useState<Date>();
   const [selectedUser, setSelectedUser] = useState<User>();
@@ -82,6 +94,8 @@ export default function Inbox() {
   const nextSubtaskId = useRef(1);
   const drawerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  const tasks = [];
 
   const priorities = [
     {value: 'low', label: 'Low'},
@@ -113,15 +127,84 @@ export default function Inbox() {
     setEditingSubtask(undefined);
   }
 
+  const sampleTasks: TaskData[] = [
+    {
+      id: '1',
+      title: 'Reply to design feedback',
+      project: 'Website relaunch',
+      priority: 'HIGH',
+      dueLabel: 'Oct 18',
+      assignee: 'JL',
+    },
+    {
+      id: '2',
+      title: 'Review pull request #128',
+      project: 'Website relaunch',
+      priority: 'HIGH',
+      dueLabel: 'Today',
+      assignee: 'AM',
+    },
+    {
+      id: '3',
+      title: 'Prepare sprint demo',
+      project: 'Mobile app',
+      priority: 'MEDIUM',
+      dueLabel: 'Today',
+      assignee: 'SK',
+    },
+    {
+      id: '4',
+      title: 'Write standup notes',
+      project: 'Personal',
+      priority: 'LOW',
+      dueLabel: 'Today',
+      assignee: 'AM',
+    },
+  ];
+
   return (
     <>
-      <TicketEmptyState
-        title="No tickets in Inbox"
-        description="New tickets will appear here."
-        icon={TrayIcon}
-        action
-        setCreateNewTicket={setCreateNewTicket}
-      />
+      <DashboardShell
+        title={'My Tasks'}
+        description={'0 task'}
+        action={
+          sampleTasks.length > 0 && (
+            <Button type="button" onClick={() => setCreateNewTicket(true)}>
+              <PlusIcon />
+              New Task
+            </Button>
+          )
+        }
+      >
+        {tasks.length > 0 ? (
+          <TicketEmptyState
+            title="No tickets in Inbox"
+            description="New tickets will appear here."
+            icon={TrayIcon}
+            action
+            setCreateNewTicket={setCreateNewTicket}
+          />
+        ) : (
+          <Tabs defaultValue="list">
+            <TabsList>
+              <TabsTrigger value="list">
+                <ListIcon />
+                List
+              </TabsTrigger>
+              <TabsTrigger value="card">
+                <KanbanIcon />
+                Card
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="list">
+              <InboxListComponent tasks={sampleTasks} />
+            </TabsContent>
+            <TabsContent value="card">
+              <InboxKanban />
+            </TabsContent>
+          </Tabs>
+        )}
+      </DashboardShell>
 
       <Drawer
         open={createNewTicket}

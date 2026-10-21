@@ -1,5 +1,5 @@
-import Inbox from '#/components/dashboard/inbox';
+import InboxMainComponent from '#/components/dashboard/inbox/inbox-main';
 
 export default function InboxPage() {
-  return <Inbox />;
+  return <InboxMainComponent />;
 }
