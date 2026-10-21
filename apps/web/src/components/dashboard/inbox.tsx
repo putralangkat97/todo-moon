@@ -71,7 +71,7 @@ const users: User[] = [
 type Subtask = {id: number; title: string; completed: boolean};
 
 export default function Inbox() {
-  const [createNewTicket, setCreateNewTicket] = useState(true);
+  const [createNewTicket, setCreateNewTicket] = useState(false);
   const [date, setDate] = useState<Date>();
   const [selectedUser, setSelectedUser] = useState<User>();
   const [subtasks, setSubtasks] = useState<Subtask[]>([]);

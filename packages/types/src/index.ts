@@ -24,6 +24,11 @@ export type MemberRole = (typeof MEMBER_ROLES)[number];
 export const WORKSPACE_USAGES = ['PERSONAL', 'WORK', 'TEAM'] as const;
 export type WorkspaceUsage = (typeof WORKSPACE_USAGES)[number];
 
+export type StepContext = {
+  userName: string;
+  values: WorkspaceUsage;
+};
+
 export const TASK_PRIORITIES = ['LOW', 'MEDIUM', 'HIGH'] as const;
 export type TaskPriority = (typeof TASK_PRIORITIES)[number];
 
