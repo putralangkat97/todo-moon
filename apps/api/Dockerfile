@@ -1,4 +1,4 @@
-FROM node:24-bookworm-slim AS build
+FROM docker.io/library/node:24-bookworm-slim AS build
 
 WORKDIR /app
 RUN npm install --global pnpm@12.11.2
@@ -26,7 +26,7 @@ FROM build AS migration
 
 CMD ["pnpm", "--filter", "@anggit-mono/database", "exec", "prisma", "migrate", "deploy"]
 
-FROM oven/bun:1.4.3 AS runtime
+FROM docker.io/oven/bun:1.4.3 AS runtime
 
 WORKDIR /app
 ENV NODE_ENV=production
