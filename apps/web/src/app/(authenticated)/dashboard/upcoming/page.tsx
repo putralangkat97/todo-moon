@@ -1,4 +1,4 @@
-import UpcomingMainComponent from '#/components/dashboard/upcoming/upcoming-main';
+import UpcomingMainComponent from '#/components/dashboard/tasks/upcoming/upcoming-main';
 
 export default function UpcomingPage() {
   return <UpcomingMainComponent />;

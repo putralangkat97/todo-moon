@@ -15,7 +15,6 @@ import {
 import {useIsMobile} from '@anggit-mono/ui/hooks/use-mobile';
 import {useRef, useState} from 'react';
 
-import {useToday} from '#/hooks/use-today';
 import {formatDate} from '@anggit-mono/domain';
 import {Calendar} from '@anggit-mono/ui/components/calendar';
 import {Checkbox} from '@anggit-mono/ui/components/checkbox';
@@ -39,11 +38,11 @@ import {
   SelectValue,
 } from '@anggit-mono/ui/components/select';
 import {Textarea} from '@anggit-mono/ui/components/textarea';
-import DashboardShell from '../dashboard-shell';
+import DashboardShell from '../../dashboard-shell';
 import TicketEmptyState from '../ticket-empty-state';
 import UserItem, {type User} from '../user-item';
-import {TodayList} from './today-list';
-import {TaskGroup} from './types';
+import {TaskGroup} from '../types';
+import {UpcomingList} from './upcoming-list';
 
 const users: User[] = [
   {
@@ -65,7 +64,7 @@ const users: User[] = [
 
 type Subtask = {id: number; title: string; completed: boolean};
 
-export default function TodayMainComponent() {
+export default function UpcomingMainComponent() {
   const [createNewTicket, setCreateNewTicket] = useState(false);
   const [date, setDate] = useState<Date>();
   const [selectedUser, setSelectedUser] = useState<User>();
@@ -81,9 +80,9 @@ export default function TodayMainComponent() {
   const tasks = [];
 
   const priorities = [
-    {value: 'low', label: 'Low'},
-    {value: 'medium', label: 'Medium'},
-    {value: 'high', label: 'High'},
+    {value: 'LOW', label: 'Low'},
+    {value: 'MEDIUM', label: 'Medium'},
+    {value: 'HIGH', label: 'High'},
   ];
 
   function addSubtask() {
@@ -103,62 +102,102 @@ export default function TodayMainComponent() {
     setEditingSubtask(undefined);
   }
 
-  const sampleGroups: TaskGroup[] = [
+  const upcomingSampleGroups: TaskGroup[] = [
     {
-      id: 'overdue',
-      title: 'Overdue',
+      id: 'tomorrow',
+      title: 'Tomorrow · Thu, Oct 22',
       tasks: [
         {
-          id: '1',
-          title: 'Reply to design feedback',
+          id: 'u1',
+          title: 'Send weekly status report',
+          project: 'Website relaunch',
+          priority: 'MEDIUM',
+          dueLabel: 'Tomorrow',
+          assignee: 'AM',
+        },
+        {
+          id: 'u2',
+          title: 'Fix login redirect bug',
+          project: 'Mobile app',
+          priority: 'HIGH',
+          dueLabel: 'Tomorrow',
+          assignee: 'SK',
+        },
+      ],
+    },
+    {
+      id: 'day-2',
+      title: 'Fri, Oct 23',
+      tasks: [
+        {
+          id: 'u3',
+          title: 'Design review with stakeholders',
           project: 'Website relaunch',
           priority: 'HIGH',
-          dueLabel: 'Oct 18',
+          dueLabel: 'Oct 23',
           assignee: 'JL',
         },
       ],
     },
     {
-      id: 'today',
-      title: 'Due today',
+      id: 'day-3',
+      title: 'Sat, Oct 24',
       tasks: [
         {
-          id: '2',
-          title: 'Review pull request #128',
-          project: 'Website relaunch',
-          priority: 'HIGH',
-          dueLabel: 'Today',
+          id: 'u4',
+          title: 'Plan next sprint backlog',
+          project: 'Mobile app',
+          priority: 'LOW',
+          dueLabel: 'Oct 24',
           assignee: 'AM',
         },
+      ],
+    },
+    {
+      id: 'day-4',
+      title: 'Sun, Oct 25',
+      tasks: [
         {
-          id: '3',
-          title: 'Prepare sprint demo',
-          project: 'Mobile app',
+          id: 'u5',
+          title: 'Update onboarding copy',
+          project: 'Website relaunch',
           priority: 'MEDIUM',
-          dueLabel: 'Today',
-          assignee: 'SK',
+          dueLabel: 'Oct 25',
+          assignee: 'JL',
         },
         {
-          id: '4',
-          title: 'Write standup notes',
+          id: 'u6',
+          title: 'Renew domain subscription',
           project: 'Personal',
           priority: 'LOW',
-          dueLabel: 'Today',
+          dueLabel: 'Oct 25',
           assignee: 'AM',
+        },
+      ],
+    },
+    {
+      id: 'day-5',
+      title: 'Mon, Oct 26',
+      tasks: [
+        {
+          id: 'u7',
+          title: 'Release v1.2 to production',
+          project: 'Mobile app',
+          priority: 'HIGH',
+          dueLabel: 'Oct 26',
+          assignee: 'SK',
         },
       ],
     },
   ];
 
-  const today = useToday();
-
   return (
     <>
       <DashboardShell
-        title={'Today'}
-        description={today ? `${formatDate(today, 'PPP')} · 0 task left` : '0 task left'}
+        title={'Upcoming'}
+        description={' Next 5 days . 0 task'}
         action={
-          sampleGroups.length > 0 && (
+          upcomingSampleGroups.length > 0 && (
             <Button type="button" onClick={() => setCreateNewTicket(true)}>
               <PlusIcon />
               New Task
@@ -177,7 +216,7 @@ export default function TodayMainComponent() {
             />
           </div>
         ) : (
-          <TodayList groups={sampleGroups} />
+          <UpcomingList groups={upcomingSampleGroups} />
         )}
       </DashboardShell>
 
@@ -200,7 +239,7 @@ export default function TodayMainComponent() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field>
                   <FieldLabel htmlFor="priority">Priority</FieldLabel>
-                  <Select defaultValue="low">
+                  <Select defaultValue="LOW">
                     <SelectTrigger id="priority" className="w-full">
                       <SelectValue />
                     </SelectTrigger>

@@ -1,4 +1,4 @@
-import InboxMainComponent from '#/components/dashboard/inbox/inbox-main';
+import InboxMainComponent from '#/components/dashboard/tasks/inbox/inbox-main';
 
 export default function InboxPage() {
   return <InboxMainComponent />;

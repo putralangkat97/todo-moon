@@ -1,6 +1,6 @@
 'use client';
 
-import {KanbanIcon, ListIcon, PencilSimpleIcon, PlusIcon, TrayIcon, XIcon} from '@phosphor-icons/react';
+import {PencilSimpleIcon, PlusIcon, TrayIcon, XIcon} from '@phosphor-icons/react';
 
 import {Button} from '@anggit-mono/ui/components/button';
 import {
@@ -15,6 +15,7 @@ import {
 import {useIsMobile} from '@anggit-mono/ui/hooks/use-mobile';
 import {useRef, useState} from 'react';
 
+import {useToday} from '#/hooks/use-today';
 import {formatDate} from '@anggit-mono/domain';
 import {Calendar} from '@anggit-mono/ui/components/calendar';
 import {Checkbox} from '@anggit-mono/ui/components/checkbox';
@@ -37,14 +38,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@anggit-mono/ui/components/select';
-import {Tabs, TabsContent, TabsList, TabsTrigger} from '@anggit-mono/ui/components/tabs';
 import {Textarea} from '@anggit-mono/ui/components/textarea';
-import DashboardShell from '../dashboard-shell';
+import DashboardShell from '../../dashboard-shell';
 import TicketEmptyState from '../ticket-empty-state';
 import UserItem, {type User} from '../user-item';
-import InboxKanban from './inbox-kanban';
-import {InboxListComponent} from './inbox-list';
-import {TaskData} from './types';
+import {TodayList} from './today-list';
+import {TaskGroup} from '../types';
 
 const users: User[] = [
   {
@@ -66,7 +65,7 @@ const users: User[] = [
 
 type Subtask = {id: number; title: string; completed: boolean};
 
-export default function InboxMainComponent() {
+export default function TodayMainComponent() {
   const [createNewTicket, setCreateNewTicket] = useState(false);
   const [date, setDate] = useState<Date>();
   const [selectedUser, setSelectedUser] = useState<User>();
@@ -104,48 +103,62 @@ export default function InboxMainComponent() {
     setEditingSubtask(undefined);
   }
 
-  const sampleTasks: TaskData[] = [
+  const sampleGroups: TaskGroup[] = [
     {
-      id: '1',
-      title: 'Reply to design feedback',
-      project: 'Website relaunch',
-      priority: 'HIGH',
-      dueLabel: 'Oct 18',
-      assignee: 'JL',
+      id: 'overdue',
+      title: 'Overdue',
+      tasks: [
+        {
+          id: '1',
+          title: 'Reply to design feedback',
+          project: 'Website relaunch',
+          priority: 'HIGH',
+          dueLabel: 'Oct 18',
+          assignee: 'JL',
+        },
+      ],
     },
     {
-      id: '2',
-      title: 'Review pull request #128',
-      project: 'Website relaunch',
-      priority: 'HIGH',
-      dueLabel: 'Today',
-      assignee: 'AM',
-    },
-    {
-      id: '3',
-      title: 'Prepare sprint demo',
-      project: 'Mobile app',
-      priority: 'MEDIUM',
-      dueLabel: 'Today',
-      assignee: 'SK',
-    },
-    {
-      id: '4',
-      title: 'Write standup notes',
-      project: 'Personal',
-      priority: 'LOW',
-      dueLabel: 'Today',
-      assignee: 'AM',
+      id: 'today',
+      title: 'Due today',
+      tasks: [
+        {
+          id: '2',
+          title: 'Review pull request #128',
+          project: 'Website relaunch',
+          priority: 'HIGH',
+          dueLabel: 'Today',
+          assignee: 'AM',
+        },
+        {
+          id: '3',
+          title: 'Prepare sprint demo',
+          project: 'Mobile app',
+          priority: 'MEDIUM',
+          dueLabel: 'Today',
+          assignee: 'SK',
+        },
+        {
+          id: '4',
+          title: 'Write standup notes',
+          project: 'Personal',
+          priority: 'LOW',
+          dueLabel: 'Today',
+          assignee: 'AM',
+        },
+      ],
     },
   ];
+
+  const today = useToday();
 
   return (
     <>
       <DashboardShell
-        title={'My Tasks'}
-        description={'0 task'}
+        title={'Today'}
+        description={today ? `${formatDate(today, 'PPP')} · 0 task left` : '0 task left'}
         action={
-          sampleTasks.length > 0 && (
+          sampleGroups.length > 0 && (
             <Button type="button" onClick={() => setCreateNewTicket(true)}>
               <PlusIcon />
               New Task
@@ -154,32 +167,17 @@ export default function InboxMainComponent() {
         }
       >
         {tasks.length > 0 ? (
-          <TicketEmptyState
-            title="No tickets in Inbox"
-            description="New tickets will appear here."
-            icon={TrayIcon}
-            action
-            setCreateNewTicket={setCreateNewTicket}
-          />
+          <div className="mt-4">
+            <TicketEmptyState
+              title="No tickets in Inbox"
+              description="New tickets will appear here."
+              icon={TrayIcon}
+              action
+              setCreateNewTicket={setCreateNewTicket}
+            />
+          </div>
         ) : (
-          <Tabs defaultValue="list">
-            <TabsList>
-              <TabsTrigger value="list">
-                <ListIcon />
-                List
-              </TabsTrigger>
-              <TabsTrigger value="card">
-                <KanbanIcon />
-                Card
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="list">
-              <InboxListComponent tasks={sampleTasks} />
-            </TabsContent>
-            <TabsContent value="card">
-              <InboxKanban />
-            </TabsContent>
-          </Tabs>
+          <TodayList groups={sampleGroups} />
         )}
       </DashboardShell>
 

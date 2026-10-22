@@ -3,10 +3,10 @@
 import {Badge} from '@anggit-mono/ui/components/badge';
 import {cn} from '@anggit-mono/ui/lib/utils';
 import {TaskActions, TaskRows} from '../task-row';
-import {TaskGroup} from './types';
+import {TaskGroup} from '../types';
 
 /** Grouped list (Overdue / Due today, etc.) */
-export function TodayList({
+export function UpcomingList({
   groups,
   className,
   ...actions

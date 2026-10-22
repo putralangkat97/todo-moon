@@ -38,11 +38,11 @@ import {
   SelectValue,
 } from '@anggit-mono/ui/components/select';
 import {Textarea} from '@anggit-mono/ui/components/textarea';
-import DashboardShell from '../dashboard-shell';
+import DashboardShell from '../../dashboard-shell';
 import TicketEmptyState from '../ticket-empty-state';
+import {TaskData} from '../types';
 import UserItem, {type User} from '../user-item';
 import {CompletedListComponent} from './completed-list';
-import {TaskData} from './types';
 
 const users: User[] = [
   {

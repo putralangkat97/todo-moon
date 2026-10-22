@@ -3,10 +3,10 @@
 import {Badge} from '@anggit-mono/ui/components/badge';
 import {cn} from '@anggit-mono/ui/lib/utils';
 import {TaskActions, TaskRows} from '../task-row';
-import {TaskData} from './types';
+import {TaskData} from '../types';
 
 /** Flat list with no grouping. Title is optional. */
-export function InboxListComponent({
+export function CompletedListComponent({
   tasks,
   title,
   className,

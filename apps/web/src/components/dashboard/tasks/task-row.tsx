@@ -12,7 +12,7 @@ import {
 } from '@anggit-mono/ui/components/dropdown-menu';
 import {cn} from '@anggit-mono/ui/lib/utils';
 import {DotsThreeIcon} from '@phosphor-icons/react';
-import {TaskData, TaskPriority, TaskVariant} from '../dashboard/inbox/types';
+import {TaskData, TaskPriority, TaskVariant} from './types';
 
 const priorityStyles: Record<TaskPriority, TaskVariant> = {
   HIGH: {label: 'High', variant: 'default'},
