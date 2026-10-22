@@ -10,11 +10,13 @@ export function InboxListComponent({
   tasks,
   title,
   className,
+  onTaskClick,
   ...actions
 }: TaskActions & {
   tasks: TaskData[];
   title?: string;
   className?: string;
+  onTaskClick?: (task: TaskData) => void;
 }) {
   if (tasks.length === 0) return null;
 
@@ -28,7 +30,7 @@ export function InboxListComponent({
           </Badge>
         </div>
       )}
-      <TaskRows tasks={tasks} {...actions} />
+      <TaskRows tasks={tasks} onTaskClick={onTaskClick} {...actions} />
     </section>
   );
 }

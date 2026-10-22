@@ -5,12 +5,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@anggit-mono/ui/components/avatar';
-
-export type User = {
-  username: string;
-  avatar: string;
-  email: string;
-};
+import {User} from './types';
 
 export default function UserItem({
   user,

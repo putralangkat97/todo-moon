@@ -13,6 +13,7 @@ import {
   DrawerTitle,
 } from '@anggit-mono/ui/components/drawer';
 import {useIsMobile} from '@anggit-mono/ui/hooks/use-mobile';
+import {cn} from '@anggit-mono/ui/lib/utils';
 
 type TaskDrawerProps = {
   open: boolean;
@@ -25,6 +26,7 @@ type TaskDrawerProps = {
   /** Ref to the drawer content, handy for portaling popovers/comboboxes into it */
   contentRef?: Ref<HTMLDivElement>;
   children: ReactNode;
+  showFooter?: boolean;
 };
 
 export default function TaskDrawer({
@@ -36,6 +38,7 @@ export default function TaskDrawer({
   submitLabel = 'Save',
   contentRef,
   children,
+  showFooter = true,
 }: TaskDrawerProps) {
   const isMobile = useIsMobile();
 
@@ -45,7 +48,13 @@ export default function TaskDrawer({
       onOpenChange={onOpenChange}
       direction={isMobile ? 'bottom' : 'right'}
     >
-      <DrawerContent ref={contentRef}>
+      <DrawerContent
+        ref={contentRef}
+        className={cn(
+          isMobile &&
+            'data-[vaul-drawer-direction=bottom]:h-dvh data-[vaul-drawer-direction=bottom]:max-h-dvh data-[vaul-drawer-direction=bottom]:rounded-none',
+        )}
+      >
         <DrawerHeader>
           <DrawerTitle>{title}</DrawerTitle>
           {description && <DrawerDescription>{description}</DrawerDescription>}
@@ -53,18 +62,20 @@ export default function TaskDrawer({
 
         <div className="flex-1 scroll-fade overflow-y-auto p-4">{children}</div>
 
-        <DrawerFooter>
-          <div className="flex gap-2 items-center justify-end">
-            <DrawerClose asChild>
-              <Button type="button" variant="outline">
-                Cancel
+        {showFooter && (
+          <DrawerFooter>
+            <div className="flex gap-2 items-center justify-end">
+              <DrawerClose asChild>
+                <Button type="button" variant="outline">
+                  Cancel
+                </Button>
+              </DrawerClose>
+              <Button type="submit" form={formId}>
+                {submitLabel}
               </Button>
-            </DrawerClose>
-            <Button type="submit" form={formId}>
-              {submitLabel}
-            </Button>
-          </div>
-        </DrawerFooter>
+            </div>
+          </DrawerFooter>
+        )}
       </DrawerContent>
     </Drawer>
   );

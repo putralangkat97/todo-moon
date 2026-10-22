@@ -1,8 +1,5 @@
 'use client';
 
-import {PencilSimpleIcon, PlusIcon, XIcon} from '@phosphor-icons/react';
-import {useRef, useState, type FormEvent, type RefObject} from 'react';
-
 import {formatDate} from '@anggit-mono/domain';
 import {Button} from '@anggit-mono/ui/components/button';
 import {Calendar} from '@anggit-mono/ui/components/calendar';
@@ -31,19 +28,10 @@ import {
   SelectValue,
 } from '@anggit-mono/ui/components/select';
 import {Textarea} from '@anggit-mono/ui/components/textarea';
-import UserItem, {type User} from './user-item';
-
-export type Subtask = {id: number; title: string; completed: boolean};
-export type Priority = 'low' | 'medium' | 'high';
-
-export type TaskFormValues = {
-  title: string;
-  description: string;
-  priority: Priority;
-  dueDate?: Date;
-  assignee?: User;
-  subtasks: Subtask[];
-};
+import {PencilSimpleIcon, PlusIcon, XIcon} from '@phosphor-icons/react';
+import {useRef, useState, type RefObject, type SubmitEvent} from 'react';
+import UserItem from './user-item';
+import type {Priority, Subtask, TaskFormValues, User} from './types';
 
 const priorities: {value: Priority; label: string}[] = [
   {value: 'low', label: 'Low'},
@@ -55,6 +43,7 @@ type TaskFormProps = {
   /** Used as the <form id>, so an external button can submit via form="..." */
   id: string;
   users: User[];
+  defaultValues?: Partial<TaskFormValues>; // new
   onSubmit?: (values: TaskFormValues) => void;
   /** Where the combobox list portals to (e.g. the drawer content) */
   portalContainer?: RefObject<HTMLElement | null>;
@@ -63,17 +52,24 @@ type TaskFormProps = {
 export default function TaskForm({
   id,
   users,
+  defaultValues,
   onSubmit,
   portalContainer,
 }: TaskFormProps) {
-  const [date, setDate] = useState<Date>();
-  const [selectedUser, setSelectedUser] = useState<User>();
-  const [subtasks, setSubtasks] = useState<Subtask[]>([]);
+  const [date, setDate] = useState<Date | undefined>(defaultValues?.dueDate);
+  const [selectedUser, setSelectedUser] = useState<User | undefined>(
+    defaultValues?.assignee,
+  );
+  const [subtasks, setSubtasks] = useState<Subtask[]>(
+    defaultValues?.subtasks ?? [],
+  );
   const [addingSubtask, setAddingSubtask] = useState(false);
   const [newSubtask, setNewSubtask] = useState('');
   const [editingSubtask, setEditingSubtask] = useState<number>();
   const [editedTitle, setEditedTitle] = useState('');
-  const nextSubtaskId = useRef(1);
+  const nextSubtaskId = useRef(
+    Math.max(0, ...(defaultValues?.subtasks ?? []).map(s => s.id)) + 1,
+  );
 
   function addSubtask() {
     const title = newSubtask.trim();
@@ -99,7 +95,7 @@ export default function TaskForm({
     setEditingSubtask(undefined);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -122,6 +118,7 @@ export default function TaskForm({
             id="title"
             name="title"
             type="text"
+            defaultValue={defaultValues?.title}
             placeholder="e.g. Prepare UI Components"
           />
         </Field>
@@ -131,6 +128,7 @@ export default function TaskForm({
           <Textarea
             id="description"
             name="description"
+            defaultValue={defaultValues?.description}
             placeholder="Optional details"
           />
         </Field>
@@ -138,7 +136,10 @@ export default function TaskForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Field>
             <FieldLabel htmlFor="priority">Priority</FieldLabel>
-            <Select name="priority" defaultValue="low">
+            <Select
+              name="priority"
+              defaultValue={defaultValues?.priority ?? 'low'}
+            >
               <SelectTrigger id="priority" className="w-full">
                 <SelectValue />
               </SelectTrigger>

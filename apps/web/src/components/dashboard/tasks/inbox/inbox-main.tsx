@@ -1,22 +1,22 @@
 'use client';
 
-import {KanbanIcon, ListIcon, PlusIcon, TrayIcon} from '@phosphor-icons/react';
 import {Button} from '@anggit-mono/ui/components/button';
-import {useRef, useState} from 'react';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from '@anggit-mono/ui/components/tabs';
+import {KanbanIcon, ListIcon, PlusIcon, TrayIcon} from '@phosphor-icons/react';
+import {useRef, useState} from 'react';
 import DashboardShell from '../../dashboard-shell';
+import TaskDetail from '../task-detail';
+import TaskDrawer from '../task-drawer';
 import TaskEmptyState from '../task-empty-state';
-import {TaskData} from '../types';
-import type {User} from '../user-item';
+import TaskForm from '../task-form';
+import {Priority, TaskData, TaskDetailData, User} from '../types';
 import InboxKanban from './inbox-kanban';
 import {InboxListComponent} from './inbox-list';
-import TaskDrawer from '../task-drawer';
-import TaskForm from '../task-form';
 
 const users: User[] = [
   {
@@ -36,52 +36,71 @@ const users: User[] = [
   },
 ];
 
+const sampleTasks: TaskData[] = [
+  {
+    id: '1',
+    title: 'Reply to design feedback',
+    project: 'Website relaunch',
+    priority: 'HIGH',
+    dueLabel: 'Oct 18',
+    assignee: 'JL',
+  },
+  {
+    id: '2',
+    title: 'Review pull request #128',
+    project: 'Website relaunch',
+    priority: 'HIGH',
+    dueLabel: 'Today',
+    assignee: 'AM',
+  },
+  {
+    id: '3',
+    title: 'Prepare sprint demo',
+    project: 'Mobile app',
+    priority: 'MEDIUM',
+    dueLabel: 'Today',
+    assignee: 'SK',
+  },
+  {
+    id: '4',
+    title: 'Write standup notes',
+    project: 'Personal',
+    priority: 'LOW',
+    dueLabel: 'Today',
+    assignee: 'AM',
+  },
+];
+
+// Temporary adapter: sample TaskData has no real date or assignee user yet
+function toDetail(task: TaskData): TaskDetailData {
+  return {
+    id: task.id,
+    title: task.title,
+    priority: task.priority.toLowerCase() as Priority,
+  };
+}
+
 export default function InboxMainComponent() {
   const [createNewTask, setCreateNewTask] = useState(false);
-  const drawerRef = useRef<HTMLDivElement>(null);
+  const createDrawerRef = useRef<HTMLDivElement>(null);
 
-  const sampleTasks: TaskData[] = [
-    {
-      id: '1',
-      title: 'Reply to design feedback',
-      project: 'Website relaunch',
-      priority: 'HIGH',
-      dueLabel: 'Oct 18',
-      assignee: 'JL',
-    },
-    {
-      id: '2',
-      title: 'Review pull request #128',
-      project: 'Website relaunch',
-      priority: 'HIGH',
-      dueLabel: 'Today',
-      assignee: 'AM',
-    },
-    {
-      id: '3',
-      title: 'Prepare sprint demo',
-      project: 'Mobile app',
-      priority: 'MEDIUM',
-      dueLabel: 'Today',
-      assignee: 'SK',
-    },
-    {
-      id: '4',
-      title: 'Write standup notes',
-      project: 'Personal',
-      priority: 'LOW',
-      dueLabel: 'Today',
-      assignee: 'AM',
-    },
-  ];
+  const [selectedTask, setSelectedTask] = useState<TaskDetailData>();
+  const [detailOpen, setDetailOpen] = useState(false);
+
+  function openDetail(task: TaskData) {
+    setSelectedTask(toDetail(task));
+    setDetailOpen(true);
+  }
+
+  const taskCount = sampleTasks.length;
 
   return (
     <>
       <DashboardShell
-        title={'My Tasks'}
-        description={'0 task'}
+        title="My Tasks"
+        description={`${taskCount} ${taskCount === 1 ? 'task' : 'tasks'}`}
         action={
-          sampleTasks.length > 0 && (
+          taskCount > 0 && (
             <Button type="button" onClick={() => setCreateNewTask(true)}>
               <PlusIcon />
               New Task
@@ -89,7 +108,7 @@ export default function InboxMainComponent() {
           )
         }
       >
-        {sampleTasks.length > 0 ? (
+        {taskCount > 0 ? (
           <Tabs defaultValue="list">
             <TabsList>
               <TabsTrigger value="list">
@@ -102,7 +121,14 @@ export default function InboxMainComponent() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="list">
-              <InboxListComponent tasks={sampleTasks} />
+              <InboxListComponent
+                tasks={sampleTasks}
+                onTaskClick={openDetail}
+                onEdit={id => {
+                  const task = sampleTasks.find(item => item.id === id);
+                  if (task) openDetail(task);
+                }}
+              />
             </TabsContent>
             <TabsContent value="card">
               <InboxKanban />
@@ -119,6 +145,7 @@ export default function InboxMainComponent() {
         )}
       </DashboardShell>
 
+      {/* Create drawer */}
       <TaskDrawer
         open={createNewTask}
         onOpenChange={setCreateNewTask}
@@ -126,18 +153,30 @@ export default function InboxMainComponent() {
         description="Add details, and create the task."
         formId="new-task-form"
         submitLabel="Create Task"
-        contentRef={drawerRef}
+        contentRef={createDrawerRef}
       >
         <TaskForm
           id="new-task-form"
           users={users}
-          portalContainer={drawerRef}
+          portalContainer={createDrawerRef}
           onSubmit={values => {
-            console.log(values);
+            console.log(values); // replace with your create-task call
             setCreateNewTask(false);
           }}
         />
       </TaskDrawer>
+
+      {/* Edit / detail drawer (sibling of the create drawer, not a child) */}
+      <TaskDetail
+        open={detailOpen}
+        task={selectedTask}
+        users={users}
+        onOpenChange={setDetailOpen}
+        onSave={(id, values) => {
+          console.log(id, values); // replace with your update-task call
+          setDetailOpen(false);
+        }}
+      />
     </>
   );
 }
