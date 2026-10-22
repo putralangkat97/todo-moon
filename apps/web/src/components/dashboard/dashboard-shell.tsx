@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  ArrowUpIcon,
-  CalendarIcon,
-  CheckCircleIcon,
-  FolderIcon,
-  ImageIcon,
-  TrayIcon,
-} from '@phosphor-icons/react';
+import {ArrowUpIcon, CalendarIcon, CheckCircleIcon, FolderIcon, ImageIcon, TrayIcon} from '@phosphor-icons/react';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import type {ReactNode} from 'react';
@@ -37,9 +30,7 @@ const ticketViews = [
   {label: 'Completed', href: '/dashboard/completed', icon: CheckCircleIcon},
 ] as const;
 
-const projectViews = [
-  {label: 'Projects', href: '/dashboard/projects', icon: FolderIcon},
-] as const;
+const projectViews = [{label: 'Projects', href: '/dashboard/projects', icon: FolderIcon}] as const;
 
 interface DashboardShellProps {
   children: ReactNode;
@@ -77,11 +68,7 @@ function DashboardSidebar({pathname}: {pathname: string}) {
               <SidebarMenu>
                 {group.items.map(({label, href, icon: Icon}) => (
                   <SidebarMenuItem key={href}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={pathname === href}
-                      tooltip={label}
-                    >
+                    <SidebarMenuButton asChild isActive={pathname === href} tooltip={label}>
                       <Link href={href}>
                         <Icon />
                         <span>{label}</span>
@@ -100,12 +87,7 @@ function DashboardSidebar({pathname}: {pathname: string}) {
   );
 }
 
-export default function DashboardShell({
-  children,
-  title = '',
-  description = '',
-  action,
-}: DashboardShellProps) {
+export default function DashboardShell({children, title = '', description = '', action}: DashboardShellProps) {
   const pathname = usePathname() ?? '/dashboard/inbox';
   const views = [...ticketViews, ...projectViews];
   const currentView = views.find(view => view.href === pathname);
@@ -116,13 +98,8 @@ export default function DashboardShell({
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger />
-          <Separator
-            orientation="vertical"
-            className="mr-2 data-[orientation=vertical]:h-4"
-          />
-          <h1 className="text-sm font-medium">
-            {currentView?.label ?? 'Inbox'}
-          </h1>
+          <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+          <h1 className="text-sm font-medium">{currentView?.label ?? 'Inbox'}</h1>
         </header>
         <div className="flex flex-1 p-4">
           <div className="flex flex-col gap-4 w-full">

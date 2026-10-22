@@ -14,7 +14,8 @@
   "scripts": {
     "build": "tsc",
     "compile": "tsc --noEmit",
-    "lint": "gts lint"
+    "lint": "gts lint",
+    "fix": "gts fix"
   },
   "devDependencies": {
     "gts": "^7.0.0",

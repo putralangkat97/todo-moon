@@ -27,8 +27,7 @@ export const STEPS: StepConfig[] = [
     id: 'project',
     label: 'First project',
     title: 'Create your first project',
-    description:
-      'Projects keep related tasks together. You can add more later.',
+    description: 'Projects keep related tasks together. You can add more later.',
     skippable: true,
     component: StepTwo,
   },
@@ -36,8 +35,7 @@ export const STEPS: StepConfig[] = [
     id: 'invite',
     label: 'Invite team',
     title: 'Invite your team',
-    description:
-      "Add teammates by email. They'll get a link to join your workspace.",
+    description: "Add teammates by email. They'll get a link to join your workspace.",
     submitLabel: 'Finish setup',
     skippable: true,
     component: StepThree,

@@ -12,10 +12,7 @@ import {
   FieldTitle,
 } from '@anggit-mono/ui/components/field';
 import {Input} from '@anggit-mono/ui/components/input';
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from '@anggit-mono/ui/components/radio-group';
+import {RadioGroup, RadioGroupItem} from '@anggit-mono/ui/components/radio-group';
 import {Controller, useFormContext} from 'react-hook-form';
 import {USAGES, type OnboardingValues} from './types';
 
@@ -26,12 +23,7 @@ export default function StepOne() {
     <FieldGroup>
       <Field>
         <FieldLabel htmlFor="name">Workspace name</FieldLabel>
-        <Input
-          id="name"
-          type="text"
-          placeholder="User's workspace"
-          {...register('name')}
-        />
+        <Input id="name" type="text" placeholder="User's workspace" {...register('name')} />
       </Field>
 
       <FieldSet>

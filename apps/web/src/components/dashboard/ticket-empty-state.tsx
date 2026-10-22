@@ -37,10 +37,7 @@ export default function TicketEmptyState({
       </EmptyHeader>
       {action && setCreateNewTicket && (
         <EmptyContent>
-          <Button
-            type="button"
-            onClick={() => setCreateNewTicket(prev => !prev)}
-          >
+          <Button type="button" onClick={() => setCreateNewTicket(prev => !prev)}>
             <PlusIcon /> New Ticket
           </Button>
         </EmptyContent>

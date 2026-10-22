@@ -17,8 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: appName,
-  description:
-    'A full-stack TypeScript monorepo boilerplate with Next.js, NestJS, Prisma, PostgreSQL, and shared UI',
+  description: 'A full-stack TypeScript monorepo boilerplate with Next.js, NestJS, Prisma, PostgreSQL, and shared UI',
 };
 
 export default function RootLayout({children}: LayoutProps<'/'>) {
@@ -26,11 +25,7 @@ export default function RootLayout({children}: LayoutProps<'/'>) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn(
-        'h-full antialiased font-sans',
-        geistMono.variable,
-        inter.variable,
-      )}
+      className={cn('h-full antialiased font-sans', geistMono.variable, inter.variable)}
     >
       <body className="min-h-full flex flex-col">
         <TooltipProvider>{children}</TooltipProvider>

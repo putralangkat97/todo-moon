@@ -17,7 +17,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:ci": "vitest run",
-    "compile": "tsc --noEmit"
+    "compile": "tsc --noEmit",
+    "fix": "eslint --fix"
   },
   "dependencies": {
     "@anggit-mono/domain": "workspace:*",

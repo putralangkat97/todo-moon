@@ -26,12 +26,7 @@ export type TaskActions = {
   onDelete?: (id: string) => void;
 };
 
-export function TaskRow({
-  task,
-  onToggle,
-  onEdit,
-  onDelete,
-}: TaskActions & {task: TaskData}) {
+export function TaskRow({task, onToggle, onEdit, onDelete}: TaskActions & {task: TaskData}) {
   const priority = priorityStyles[task.priority];
 
   return (
@@ -58,35 +53,21 @@ export function TaskRow({
         {priority.label}
       </Badge>
 
-      <span className="w-14 text-right text-sm text-muted-foreground">
-        {task.dueLabel}
-      </span>
+      <span className="w-14 text-right text-sm text-muted-foreground">{task.dueLabel}</span>
 
       <Avatar className="size-8">
-        <AvatarFallback className="bg-muted text-xs font-medium">
-          {task.assignee}
-        </AvatarFallback>
+        <AvatarFallback className="bg-muted text-xs font-medium">{task.assignee}</AvatarFallback>
       </Avatar>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-8 text-muted-foreground"
-            aria-label="Task actions"
-          >
+          <Button variant="ghost" size="icon" className="size-8 text-muted-foreground" aria-label="Task actions">
             <DotsThreeIcon className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onSelect={() => onEdit?.(task.id)}>
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="text-destructive focus:text-destructive"
-            onSelect={() => onDelete?.(task.id)}
-          >
+          <DropdownMenuItem onSelect={() => onEdit?.(task.id)}>Edit</DropdownMenuItem>
+          <DropdownMenuItem className="text-destructive focus:text-destructive" onSelect={() => onDelete?.(task.id)}>
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -95,10 +76,7 @@ export function TaskRow({
   );
 }
 
-export function TaskRows({
-  tasks,
-  ...actions
-}: TaskActions & {tasks: TaskData[]}) {
+export function TaskRows({tasks, ...actions}: TaskActions & {tasks: TaskData[]}) {
   return (
     <ul className="divide-y border bg-card">
       {tasks.map(task => (

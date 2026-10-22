@@ -17,6 +17,7 @@
     "test:ci": "pnpm --parallel -r run test:ci",
     "tsc": "pnpm --filter './packages/*' -r run build && pnpm --parallel -r run compile",
     "lint": "pnpm --parallel -r run lint",
+    "fix": "pnpm --parallel -r run fix",
     "build": "pnpm -r run build",
     "compile": "tsc"
   },

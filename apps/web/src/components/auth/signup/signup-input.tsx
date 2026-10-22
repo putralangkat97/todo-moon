@@ -7,26 +7,12 @@ export function SignupInput() {
     <>
       <Field>
         <FieldLabel htmlFor="name">Full Name</FieldLabel>
-        <Input
-          id="name"
-          name="name"
-          type="text"
-          placeholder="your name"
-          autoComplete="name"
-          required
-        />
+        <Input id="name" name="name" type="text" placeholder="your name" autoComplete="name" required />
       </Field>
 
       <Field>
         <FieldLabel htmlFor="email">Email</FieldLabel>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="m@example.com"
-          autoComplete="email"
-          required
-        />
+        <Input id="email" name="email" type="email" placeholder="m@example.com" autoComplete="email" required />
       </Field>
 
       <Field>
@@ -34,29 +20,15 @@ export function SignupInput() {
           <FieldLabel htmlFor="password">Password</FieldLabel>
         </div>
 
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          required
-        />
+        <Input id="password" name="password" type="password" autoComplete="current-password" required />
       </Field>
 
       <Field>
         <div className="flex items-center">
-          <FieldLabel htmlFor="password_confirmation">
-            Confirm Password
-          </FieldLabel>
+          <FieldLabel htmlFor="password_confirmation">Confirm Password</FieldLabel>
         </div>
 
-        <Input
-          id="password_confirmation"
-          name="password_confirmation"
-          type="password"
-          autoComplete=""
-          required
-        />
+        <Input id="password_confirmation" name="password_confirmation" type="password" autoComplete="" required />
       </Field>
 
       <Field>

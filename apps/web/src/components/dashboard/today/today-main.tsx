@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  PencilSimpleIcon,
-  PlusIcon,
-  TrayIcon,
-  XIcon,
-} from '@phosphor-icons/react';
+import {PencilSimpleIcon, PlusIcon, TrayIcon, XIcon} from '@phosphor-icons/react';
 
 import {Button} from '@anggit-mono/ui/components/button';
 import {
@@ -34,11 +29,7 @@ import {
 } from '@anggit-mono/ui/components/combobox';
 import {Field, FieldGroup, FieldLabel} from '@anggit-mono/ui/components/field';
 import {Input} from '@anggit-mono/ui/components/input';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@anggit-mono/ui/components/popover';
+import {Popover, PopoverContent, PopoverTrigger} from '@anggit-mono/ui/components/popover';
 import {
   Select,
   SelectContent,
@@ -99,10 +90,7 @@ export default function TodayMainComponent() {
     const title = newSubtask.trim();
     if (!title) return;
 
-    setSubtasks(current => [
-      ...current,
-      {id: nextSubtaskId.current++, title, completed: false},
-    ]);
+    setSubtasks(current => [...current, {id: nextSubtaskId.current++, title, completed: false}]);
     setNewSubtask('');
     setAddingSubtask(false);
   }
@@ -110,11 +98,7 @@ export default function TodayMainComponent() {
   function saveSubtask(id: number) {
     const title = editedTitle.trim();
     if (title) {
-      setSubtasks(current =>
-        current.map(subtask =>
-          subtask.id === id ? {...subtask, title} : subtask,
-        ),
-      );
+      setSubtasks(current => current.map(subtask => (subtask.id === id ? {...subtask, title} : subtask)));
     }
     setEditingSubtask(undefined);
   }
@@ -172,9 +156,7 @@ export default function TodayMainComponent() {
     <>
       <DashboardShell
         title={'Today'}
-        description={
-          today ? `${formatDate(today, 'PPP')} · 0 task left` : '0 task left'
-        }
+        description={today ? `${formatDate(today, 'PPP')} · 0 task left` : '0 task left'}
         action={
           sampleGroups.length > 0 && (
             <Button type="button" onClick={() => setCreateNewTicket(true)}>
@@ -199,36 +181,21 @@ export default function TodayMainComponent() {
         )}
       </DashboardShell>
 
-      <Drawer
-        open={createNewTicket}
-        onOpenChange={setCreateNewTicket}
-        direction={isMobile ? 'bottom' : 'right'}
-      >
+      <Drawer open={createNewTicket} onOpenChange={setCreateNewTicket} direction={isMobile ? 'bottom' : 'right'}>
         <DrawerContent ref={drawerRef}>
           <DrawerHeader>
             <DrawerTitle>New ticket</DrawerTitle>
-            <DrawerDescription>
-              Add details, and create the task.
-            </DrawerDescription>
+            <DrawerDescription>Add details, and create the task.</DrawerDescription>
           </DrawerHeader>
           <div className="flex-1 scroll-fade overflow-y-auto p-4">
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="title">Title</FieldLabel>
-                <Input
-                  id="title"
-                  name="title"
-                  type="text"
-                  placeholder="e.g. Prepare UI Components"
-                />
+                <Input id="title" name="title" type="text" placeholder="e.g. Prepare UI Components" />
               </Field>
               <Field>
                 <FieldLabel htmlFor="description">Description</FieldLabel>
-                <Textarea
-                  id="description"
-                  name="description"
-                  placeholder="Optional details"
-                />
+                <Textarea id="description" name="description" placeholder="Optional details" />
               </Field>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field>
@@ -252,25 +219,12 @@ export default function TodayMainComponent() {
                   <FieldLabel htmlFor="due_date">Due Date</FieldLabel>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        id="date-picker-simple"
-                        className="justify-start font-normal"
-                      >
-                        {date ? (
-                          formatDate(date, 'PPP')
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
+                      <Button variant="outline" id="date-picker-simple" className="justify-start font-normal">
+                        {date ? formatDate(date, 'PPP') : <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        defaultMonth={date}
-                      />
+                      <Calendar mode="single" selected={date} onSelect={setDate} defaultMonth={date} />
                     </PopoverContent>
                   </Popover>
                 </Field>
@@ -300,11 +254,7 @@ export default function TodayMainComponent() {
                     onValueChange={value => setSelectedUser(value as User)}
                     itemToStringValue={value => (value as User).username}
                   >
-                    <ComboboxInput
-                      id="assignee"
-                      placeholder="Select an assignee"
-                      className="w-full"
-                    />
+                    <ComboboxInput id="assignee" placeholder="Select an assignee" className="w-full" />
                     <ComboboxContent container={drawerRef}>
                       <ComboboxEmpty>No users found.</ComboboxEmpty>
                       <ComboboxList>
@@ -326,10 +276,7 @@ export default function TodayMainComponent() {
                 <FieldLabel>Subtask</FieldLabel>
                 <div className="flex flex-col items-start gap-1">
                   {subtasks.map(subtask => (
-                    <div
-                      key={subtask.id}
-                      className="group/subtask flex w-full items-center justify-between gap-2"
-                    >
+                    <div key={subtask.id} className="group/subtask flex w-full items-center justify-between gap-2">
                       <div className="flex min-w-0 flex-1 items-center gap-2">
                         <Checkbox
                           id={`subtask-${subtask.id}`}
@@ -338,9 +285,7 @@ export default function TodayMainComponent() {
                           onCheckedChange={checked =>
                             setSubtasks(current =>
                               current.map(item =>
-                                item.id === subtask.id
-                                  ? {...item, completed: checked === true}
-                                  : item,
+                                item.id === subtask.id ? {...item, completed: checked === true} : item,
                               ),
                             )
                           }
@@ -350,9 +295,7 @@ export default function TodayMainComponent() {
                             autoFocus
                             aria-label="Edit subtask"
                             value={editedTitle}
-                            onChange={event =>
-                              setEditedTitle(event.target.value)
-                            }
+                            onChange={event => setEditedTitle(event.target.value)}
                             onBlur={() => saveSubtask(subtask.id)}
                             onKeyDown={event => {
                               if (event.key === 'Enter') {
@@ -392,11 +335,7 @@ export default function TodayMainComponent() {
                           variant="ghost"
                           size="icon-sm"
                           aria-label={`Remove ${subtask.title}`}
-                          onClick={() =>
-                            setSubtasks(current =>
-                              current.filter(item => item.id !== subtask.id),
-                            )
-                          }
+                          onClick={() => setSubtasks(current => current.filter(item => item.id !== subtask.id))}
                         >
                           <XIcon />
                         </Button>
@@ -439,12 +378,7 @@ export default function TodayMainComponent() {
                     </div>
                   )}
 
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="text-normal"
-                    onClick={() => setAddingSubtask(true)}
-                  >
+                  <Button type="button" variant="ghost" className="text-normal" onClick={() => setAddingSubtask(true)}>
                     <PlusIcon />
                     Add subtask
                   </Button>

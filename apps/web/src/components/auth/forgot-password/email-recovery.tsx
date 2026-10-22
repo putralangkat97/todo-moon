@@ -1,12 +1,7 @@
 'use client';
 
 import {Button} from '@anggit-mono/ui/components/button';
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from '@anggit-mono/ui/components/field';
+import {Field, FieldDescription, FieldGroup, FieldLabel} from '@anggit-mono/ui/components/field';
 import {Input} from '@anggit-mono/ui/components/input';
 import {Spinner} from '@anggit-mono/ui/components/spinner';
 import {cn} from '@anggit-mono/ui/lib/utils';
@@ -46,10 +41,7 @@ export default function EmailRecovery({className}: ComponentProps<'form'>) {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={cn('flex flex-col gap-6', className)}
-    >
+    <form onSubmit={handleSubmit} className={cn('flex flex-col gap-6', className)}>
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           {emailSent && (
@@ -58,9 +50,7 @@ export default function EmailRecovery({className}: ComponentProps<'form'>) {
             </div>
           )}
 
-          <h1 className="text-2xl font-bold">
-            {emailSent ? 'Check your email' : 'Reset your password'}
-          </h1>
+          <h1 className="text-2xl font-bold">{emailSent ? 'Check your email' : 'Reset your password'}</h1>
 
           <p className="text-sm text-balance text-muted-foreground text-wrap">
             {emailSent
@@ -73,14 +63,7 @@ export default function EmailRecovery({className}: ComponentProps<'form'>) {
           <>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="m@example.com"
-                autoComplete="email"
-                required
-              />
+              <Input id="email" name="email" type="email" placeholder="m@example.com" autoComplete="email" required />
             </Field>
 
             <Field>
@@ -91,11 +74,7 @@ export default function EmailRecovery({className}: ComponentProps<'form'>) {
           </>
         ) : (
           <Field>
-            <Button
-              type="button"
-              onClick={backToLogin}
-              disabled={resendLoading || loading}
-            >
+            <Button type="button" onClick={backToLogin} disabled={resendLoading || loading}>
               {resendLoading ? (
                 <>
                   <Spinner /> Sending...
@@ -109,12 +88,7 @@ export default function EmailRecovery({className}: ComponentProps<'form'>) {
 
         {!emailSent ? (
           <Field className="text-center -mt-1">
-            <Button
-              type="button"
-              variant="link"
-              onClick={backToLogin}
-              disabled={resendLoading || loading}
-            >
+            <Button type="button" variant="link" onClick={backToLogin} disabled={resendLoading || loading}>
               <ArrowLeftIcon />
               Back to sign in
             </Button>

@@ -17,6 +17,7 @@
     "start": "nest start",
     "dev": "nest start --watch",
     "lint": "gts lint",
+    "fix": "gts fix",
     "test": "vitest run",
     "test:ci": "vitest run --coverage",
     "compile": "tsc --noEmit"

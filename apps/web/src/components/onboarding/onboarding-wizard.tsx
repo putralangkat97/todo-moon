@@ -1,12 +1,5 @@
 import {Button} from '@anggit-mono/ui/components/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@anggit-mono/ui/components/card';
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@anggit-mono/ui/components/card';
 import {ReactNode} from 'react';
 
 interface OnboardingShellProps {
@@ -51,19 +44,9 @@ export default function OnboardingWizard({
           {steps.map((s, i) => {
             const reached = i <= currentStep;
             return (
-              <li
-                key={s.id}
-                className="space-y-2"
-                aria-current={i === currentStep ? 'step' : undefined}
-              >
-                <div
-                  className={`h-1 rounded-full ${reached ? 'bg-foreground' : 'bg-muted'}`}
-                />
-                <span
-                  className={`text-xs ${reached ? 'text-foreground' : 'text-muted-foreground'}`}
-                >
-                  {s.label}
-                </span>
+              <li key={s.id} className="space-y-2" aria-current={i === currentStep ? 'step' : undefined}>
+                <div className={`h-1 rounded-full ${reached ? 'bg-foreground' : 'bg-muted'}`} />
+                <span className={`text-xs ${reached ? 'text-foreground' : 'text-muted-foreground'}`}>{s.label}</span>
               </li>
             );
           })}
@@ -77,12 +60,7 @@ export default function OnboardingWizard({
         </CardHeader>
         <CardContent>{children}</CardContent>
         <CardFooter className="justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onBack}
-            disabled={isFirst || isSubmitting}
-          >
+          <Button type="button" variant="outline" onClick={onBack} disabled={isFirst || isSubmitting}>
             Back
           </Button>
           <div className="flex items-center gap-4">

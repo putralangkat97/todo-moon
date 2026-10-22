@@ -1,12 +1,7 @@
 'use client';
 
 import {Button} from '@anggit-mono/ui/components/button';
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from '@anggit-mono/ui/components/field';
+import {Field, FieldDescription, FieldGroup, FieldLabel} from '@anggit-mono/ui/components/field';
 import {Input} from '@anggit-mono/ui/components/input';
 import {Spinner} from '@anggit-mono/ui/components/spinner';
 import {cn} from '@anggit-mono/ui/lib/utils';
@@ -62,9 +57,7 @@ export default function VerifyEmail({className}: ComponentProps<'form'>) {
             <EnvelopeIcon className="size-8" />
           </div>
 
-          <h1 className="text-2xl font-bold">
-            {changeEmail ? 'Change your email' : 'Verify your email'}
-          </h1>
+          <h1 className="text-2xl font-bold">{changeEmail ? 'Change your email' : 'Verify your email'}</h1>
 
           <p className="text-sm text-balance text-muted-foreground">
             {changeEmail
@@ -113,11 +106,7 @@ export default function VerifyEmail({className}: ComponentProps<'form'>) {
         ) : (
           <>
             <Field>
-              <Button
-                type="button"
-                disabled={isResending || isUpdatingEmail}
-                onClick={handleResend}
-              >
+              <Button type="button" disabled={isResending || isUpdatingEmail} onClick={handleResend}>
                 {isResending && <Spinner />}
                 {isResending ? 'Sending email...' : 'Resend email'}
               </Button>

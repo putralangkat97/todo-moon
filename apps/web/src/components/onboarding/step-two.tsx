@@ -13,18 +13,12 @@ export default function StepTwo() {
     <FieldGroup>
       <Field>
         <FieldLabel htmlFor="projectName">Project name</FieldLabel>
-        <Input
-          id="projectName"
-          type="text"
-          placeholder="e.g. Website relaunch"
-          {...register('projectName')}
-        />
+        <Input id="projectName" type="text" placeholder="e.g. Website relaunch" {...register('projectName')} />
       </Field>
 
       <Field>
         <FieldLabel htmlFor="projectDescription">
-          Description{' '}
-          <span className="text-muted-foreground font-normal">(optional)</span>
+          Description <span className="text-muted-foreground font-normal">(optional)</span>
         </FieldLabel>
         <Textarea
           id="projectDescription"
@@ -35,12 +29,7 @@ export default function StepTwo() {
 
       <Field>
         <FieldLabel htmlFor="firstTask">First task</FieldLabel>
-        <Input
-          id="firstTask"
-          type="text"
-          placeholder="e.g. Draft homepage copy"
-          {...register('firstTask')}
-        />
+        <Input id="firstTask" type="text" placeholder="e.g. Draft homepage copy" {...register('firstTask')} />
       </Field>
     </FieldGroup>
   );

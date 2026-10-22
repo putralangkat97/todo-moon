@@ -4,9 +4,7 @@ import {Suspense} from 'react';
 
 async function HelloFromApi() {
   await connection();
-  const response = await fetch(
-    `${process.env.API_URL ?? 'http://localhost:4000'}/hello`,
-  );
+  const response = await fetch(`${process.env.API_URL ?? 'http://localhost:4000'}/hello`);
 
   if (!response.ok) {
     throw new Error(`API returned ${response.status}`);
