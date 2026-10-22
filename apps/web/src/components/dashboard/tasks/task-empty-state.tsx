@@ -13,18 +13,18 @@ import {
 } from '@anggit-mono/ui/components/empty';
 import {Dispatch, SetStateAction} from 'react';
 
-export default function TicketEmptyState({
+export default function TaskEmptyState({
   title,
   description,
   icon: Icon,
   action = false,
-  setCreateNewTicket,
+  setCreateNewTask,
 }: {
   title: string;
   description: string;
   icon: Icon;
   action?: boolean;
-  setCreateNewTicket?: Dispatch<SetStateAction<boolean>>;
+  setCreateNewTask?: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <Empty>
@@ -35,10 +35,10 @@ export default function TicketEmptyState({
         <EmptyTitle>{title}</EmptyTitle>
         <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
-      {action && setCreateNewTicket && (
+      {action && setCreateNewTask && (
         <EmptyContent>
-          <Button type="button" onClick={() => setCreateNewTicket(prev => !prev)}>
-            <PlusIcon /> New Ticket
+          <Button type="button" onClick={() => setCreateNewTask(prev => !prev)}>
+            <PlusIcon /> New task
           </Button>
         </EmptyContent>
       )}

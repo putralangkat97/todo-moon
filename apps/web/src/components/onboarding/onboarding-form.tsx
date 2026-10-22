@@ -8,10 +8,16 @@ import {STEPS} from './steps';
 import type {Dynamic, OnboardingValues, StepContext} from './types';
 
 function resolve<T>(value: Dynamic<T>, ctx: StepContext): T {
-  return typeof value === 'function' ? (value as (ctx: StepContext) => T)(ctx) : value;
+  return typeof value === 'function'
+    ? (value as (ctx: StepContext) => T)(ctx)
+    : value;
 }
 
-export default function OnboardingForm({userName = 'User'}: {userName?: string}) {
+export default function OnboardingForm({
+  userName = 'User',
+}: {
+  userName?: string;
+}) {
   const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
 

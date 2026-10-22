@@ -1,4 +1,7 @@
-import type {TaskPriority as TaskPriorityType, Task as TaskType} from '@anggit-mono/types';
+import type {
+  TaskPriority as TaskPriorityType,
+  Task as TaskType,
+} from '@anggit-mono/types';
 import {Badge} from '@anggit-mono/ui/components/badge';
 
 export type TaskPriority = TaskPriorityType;

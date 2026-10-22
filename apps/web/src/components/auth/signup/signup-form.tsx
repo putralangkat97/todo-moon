@@ -13,7 +13,9 @@ export function SignupForm({className, ...props}: ComponentProps<'form'>) {
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Sign up</h1>
 
-          <p className="text-sm text-balance text-muted-foreground">Enter your data below to get started</p>
+          <p className="text-sm text-balance text-muted-foreground">
+            Enter your data below to get started
+          </p>
         </div>
 
         <SignupInput />

@@ -38,10 +38,18 @@ export type TaskStatus = (typeof TASK_STATUSES)[number];
 export const OAUTH_PROVIDERS = ['GITHUB', 'GOOGLE'] as const;
 export type OAuthProvider = (typeof OAUTH_PROVIDERS)[number];
 
-export const AUTH_TOKEN_TYPES = ['EMAIL_VERIFICATION', 'PASSWORD_RESET'] as const;
+export const AUTH_TOKEN_TYPES = [
+  'EMAIL_VERIFICATION',
+  'PASSWORD_RESET',
+] as const;
 export type AuthTokenType = (typeof AUTH_TOKEN_TYPES)[number];
 
-export const INVITE_STATUSES = ['PENDING', 'ACCEPTED', 'REVOKED', 'EXPIRED'] as const;
+export const INVITE_STATUSES = [
+  'PENDING',
+  'ACCEPTED',
+  'REVOKED',
+  'EXPIRED',
+] as const;
 export type InviteStatus = (typeof INVITE_STATUSES)[number];
 
 export const THEME_PREFERENCES = ['LIGHT', 'DARK', 'SYSTEM'] as const;
@@ -370,7 +378,9 @@ export interface CreateProjectInput {
   memberIds?: string[];
 }
 
-export type UpdateProjectInput = Partial<Omit<CreateProjectInput, 'memberIds'>> & {
+export type UpdateProjectInput = Partial<
+  Omit<CreateProjectInput, 'memberIds'>
+> & {
   archived?: boolean;
 };
 
@@ -399,7 +409,12 @@ export interface ChangePasswordInput {
 export type UpdateNotificationSettingsInput = Partial<
   Pick<
     UserSettings,
-    'emailDueReminders' | 'emailDailySummary' | 'emailAssignments' | 'emailWeeklyDigest' | 'pushDueSoon' | 'pushOverdue'
+    | 'emailDueReminders'
+    | 'emailDailySummary'
+    | 'emailAssignments'
+    | 'emailWeeklyDigest'
+    | 'pushDueSoon'
+    | 'pushOverdue'
   >
 >;
 

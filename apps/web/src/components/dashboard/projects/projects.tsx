@@ -20,7 +20,9 @@ export default function Projects() {
           <FolderIcon />
         </EmptyMedia>
         <EmptyTitle>No projects yet</EmptyTitle>
-        <EmptyDescription>Create a project to organize your tickets.</EmptyDescription>
+        <EmptyDescription>
+          Create a project to organize your tickets.
+        </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button type="button">Create project</Button>

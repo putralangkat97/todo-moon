@@ -13,7 +13,14 @@ const getServerSnapshot = () => null;
 
 /** Today's local date. `undefined` on the server and during hydration. */
 export function useToday(): Date | undefined {
-  const timestamp = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const timestamp = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
-  return useMemo(() => (timestamp === null ? undefined : new Date(timestamp)), [timestamp]);
+  return useMemo(
+    () => (timestamp === null ? undefined : new Date(timestamp)),
+    [timestamp],
+  );
 }

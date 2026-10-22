@@ -13,7 +13,9 @@ export class DatabaseClient extends PrismaClient {
     });
     const connectionString = process.env.DATABASE_URL;
     if (!connectionString) {
-      throw new Error('DATABASE_URL is required. Set packages/database/.env or export it.');
+      throw new Error(
+        'DATABASE_URL is required. Set packages/database/.env or export it.',
+      );
     }
     super({adapter: new PrismaPg({connectionString})});
   }

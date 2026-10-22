@@ -1,7 +1,11 @@
 'use client';
 
 import {Button} from '@anggit-mono/ui/components/button';
-import {Field, FieldDescription, FieldSeparator} from '@anggit-mono/ui/components/field';
+import {
+  Field,
+  FieldDescription,
+  FieldSeparator,
+} from '@anggit-mono/ui/components/field';
 import {GithubLogoIcon, GoogleLogoIcon} from '@phosphor-icons/react';
 import Link from 'next/link';
 
@@ -26,7 +30,11 @@ export function LoginSocial() {
       <Field>
         <div className="flex items-center md:flex-row gap-4">
           {providers.map((data, index) => (
-            <Button key={`${index}-${data.name}`} variant="outline" type="button">
+            <Button
+              key={`${index}-${data.name}`}
+              variant="outline"
+              type="button"
+            >
               {data.icon}
               {data.label}
             </Button>

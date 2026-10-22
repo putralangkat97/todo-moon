@@ -5,7 +5,13 @@ import {Badge} from '@anggit-mono/ui/components/badge';
 import {Button} from '@anggit-mono/ui/components/button';
 import {Field, FieldGroup, FieldLabel} from '@anggit-mono/ui/components/field';
 import {Input} from '@anggit-mono/ui/components/input';
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@anggit-mono/ui/components/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@anggit-mono/ui/components/select';
 import {XIcon} from '@phosphor-icons/react';
 import {useState, type KeyboardEvent} from 'react';
 import {useFieldArray, useFormContext} from 'react-hook-form';
@@ -71,10 +77,14 @@ export default function StepThree() {
             {fields.map((invite, index) => (
               <li key={invite.id} className="flex items-center gap-3 p-3">
                 <Avatar className="size-8">
-                  <AvatarFallback className="text-xs">{invite.email.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  <AvatarFallback className="text-xs">
+                    {invite.email.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
                 <span className="flex-1 truncate text-sm">{invite.email}</span>
-                <Badge variant="secondary">{ROLES.find(r => r.value === invite.role)?.label}</Badge>
+                <Badge variant="secondary">
+                  {ROLES.find(r => r.value === invite.role)?.label}
+                </Badge>
                 <Button
                   type="button"
                   variant="ghost"
