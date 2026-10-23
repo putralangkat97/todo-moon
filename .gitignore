@@ -3,3 +3,4 @@ dist
 build
 packages/database/src/generated/
 .env
+Caddyfile
